@@ -1,4 +1,4 @@
-package com.pocketmp3.player;
+package com.apocketmp3.player;
 
 public final class Track {
     public final String uri, title, artist;

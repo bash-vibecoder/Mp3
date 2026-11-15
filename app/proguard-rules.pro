@@ -1,2 +1,2 @@
--keep class com.pocketmp3.player.MainActivity { *; }
--keep class com.pocketmp3.player.PlaybackService { *; }
+-keep class com.apocketmp3.player.MainActivity { *; }
+-keep class com.apocketmp3.player.PlaybackService { *; }

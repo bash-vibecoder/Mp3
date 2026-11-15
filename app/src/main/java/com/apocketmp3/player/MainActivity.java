@@ -1,4 +1,4 @@
-package com.pocketmp3.player;
+package com.apocketmp3.player;
 
 import android.Manifest;
 import android.app.Activity;
@@ -209,8 +209,8 @@ public final class MainActivity extends Activity {
     private void showBatterySettings() {
         boolean exempt = batteryExempt();
         String message = exempt
-                ? "Android battery optimization is already disabled for Pocket MP3."
-                : "Allow Pocket MP3 to ignore battery optimization to help keep music playing with the screen off. This may use more battery.";
+                ? "Android battery optimization is already disabled for APocketMp3."
+                : "Allow APocketMp3 to ignore battery optimization to help keep music playing with the screen off. This may use more battery.";
         if (backgroundRestricted()) message += "\n\nAndroid currently restricts this app's background activity. Open App settings and change Battery to Unrestricted or allow background activity.";
         else message += "\n\nIf your phone still stops music, open App settings and choose Battery → Unrestricted. On phones with extra battery controls, also allow background activity or auto-start.";
         AlertDialog.Builder dialog = new AlertDialog.Builder(this)
@@ -235,7 +235,7 @@ public final class MainActivity extends Activity {
     private void openAppSettings() {
         if (!openSettings(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                 Uri.parse("package:" + getPackageName())))) {
-            Toast.makeText(this, "Open Android Settings → Apps → Pocket MP3 → Battery and allow background activity.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Open Android Settings → Apps → APocketMp3 → Battery and allow background activity.", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -255,7 +255,7 @@ public final class MainActivity extends Activity {
         LinearLayout top = column(); top.setPadding(dp(22), dp(14), dp(22), dp(10));
         root.addView(top);
         LinearLayout brand = row();
-        TextView logo = text("●  POCKET MP3", 14, BLUE, true); logo.setLetterSpacing(0.09f);
+        TextView logo = text("●  APocketMp3", 14, BLUE, true); logo.setLetterSpacing(0.09f);
         brand.addView(logo, new LinearLayout.LayoutParams(0, dp(48), 1)); logo.setGravity(Gravity.CENTER_VERTICAL);
         battery = icon("battery", "Background playback and battery settings", v -> showBatterySettings());
         brand.addView(battery, new LinearLayout.LayoutParams(dp(48), dp(48)));

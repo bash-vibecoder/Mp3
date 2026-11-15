@@ -1,4 +1,4 @@
-package com.pocketmp3.player;
+package com.apocketmp3.player;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -83,7 +83,7 @@ public final class PlaybackService extends Service {
         channel.setDescription("Controls for your local MP3 files");
         notifications.createNotificationChannel(channel);
         PowerManager power = (PowerManager) getSystemService(POWER_SERVICE);
-        preparingWakeLock = power.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "PocketMP3:prepare");
+        preparingWakeLock = power.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "APocketMp3:prepare");
         preparingWakeLock.setReferenceCounted(false);
         AudioAttributes attributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build();
@@ -101,7 +101,7 @@ public final class PlaybackService extends Service {
                         pause();
                     }
                 }).build();
-        session = new MediaSession(this, "Pocket MP3");
+        session = new MediaSession(this, "APocketMp3");
         session.setCallback(new MediaSession.Callback() {
             @Override public void onPlay() { resume(); }
             @Override public void onPause() { pause(); }
@@ -297,7 +297,7 @@ public final class PlaybackService extends Service {
         } catch (IllegalStateException | SecurityException exception) {
             // fail() also stops a start request that succeeded before promotion was
             // rejected, so Android is not left waiting for startForeground().
-            fail("Android blocked background playback. Open Pocket MP3 and check Battery settings.");
+            fail("Android blocked background playback. Open APocketMp3 and check Battery settings.");
             return false;
         }
     }
@@ -430,7 +430,7 @@ public final class PlaybackService extends Service {
         Notification.Builder builder = new Notification.Builder(this, CHANNEL)
                 .setSmallIcon(R.drawable.ic_music)
                 .setLargeIcon(artwork)
-                .setContentTitle(track == null ? "Pocket MP3" : track.title)
+                .setContentTitle(track == null ? "APocketMp3" : track.title)
                 .setContentText(error != null ? error : loading ? "Opening MP3…" : track == null ? "Local music" : track.artist)
                 .setContentIntent(session.getController().getSessionActivity())
                 .setVisibility(Notification.VISIBILITY_PUBLIC)
@@ -447,7 +447,7 @@ public final class PlaybackService extends Service {
     private void updateState() {
         Track track = current();
         session.setMetadata(new MediaMetadata.Builder()
-                .putString(MediaMetadata.METADATA_KEY_TITLE, track == null ? "Pocket MP3" : track.title)
+                .putString(MediaMetadata.METADATA_KEY_TITLE, track == null ? "APocketMp3" : track.title)
                 .putString(MediaMetadata.METADATA_KEY_ARTIST, track == null ? "" : track.artist)
                 .putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, artwork)
                 .putBitmap(MediaMetadata.METADATA_KEY_DISPLAY_ICON, artwork)

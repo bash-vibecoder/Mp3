@@ -1,4 +1,4 @@
-package com.pocketmp3.player;
+package com.apocketmp3.player;
 
 import android.content.Context;
 import android.graphics.Bitmap;
