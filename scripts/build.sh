@@ -12,7 +12,7 @@ if ! [[ "$POCKET_VERSION" =~ ^[A-Za-z0-9._-]+$ ]]; then
     echo "The manifest versionName must be a nonempty filename-safe version." >&2
     exit 1
 fi
-POCKET_APK="dist/PocketMP3-v${POCKET_VERSION}.apk"
+POCKET_APK="dist/APocketMp3-v${POCKET_VERSION}.apk"
 test -f "$ANDROID_JAR" || { echo "Missing Android API jar: $ANDROID_JAR" >&2; exit 1; }
 test -f "$RESOURCE_JAR" || { echo "Missing Android resource jar: $RESOURCE_JAR" >&2; exit 1; }
 test -f "$R8_JAR" || { echo "Missing R8/D8 jar: $R8_JAR" >&2; exit 1; }

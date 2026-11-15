@@ -4,11 +4,7 @@ A small native Android player for local `.mp3` files. Android 8.0 or newer. No s
 
 **Current version:** 1.4 · **Minimum Android:** 8.0 (API 26) · **Target Android:** 15 (API 35)
 
-## Install
-
-The signed APK is generated at `dist/PocketMP3-v1.4.apk`. The build script takes the version from the manifest and includes it at the end of the filename. Copy it to your phone, open it, and allow your file manager to install this app if Android asks.
-
-Install updates over the existing app using the same signing key to retain imported files, favorites, and saved settings. APKs and signing keys are not stored in this repository; see [Build](#build) to create an APK. The last-song bookmark begins saving when you play music in version 1.4.
+[Download the latest APK](https://github.com/bash-vibecoder/Mp3/releases/latest)
 
 ## Features
 
@@ -40,7 +36,7 @@ Permissions are limited to reading the audio library when requested, running a f
 - Restore paused and seek to the saved position before playback starts.
 - Save position every five seconds and on pause, seek, stop, and leaving the app.
 - Preserve the latest seek request during rapid seeks and handle canceled preparation safely.
-- Generate APK filenames from the app version, starting with `PocketMP3-v1.4.apk`.
+- Generate APK filenames from the app version, starting with `APocketMp3-v1.4.apk`.
 - Add queue restoration, snapshot isolation, and restored shuffle tests.
 
 ### 1.3
@@ -92,13 +88,3 @@ bash scripts/build.sh
 The standalone build compiles against API 35 and packages resources using API 34 because the Ubuntu ARM resource tool predates API 35's compact resource format. All referenced resource IDs are present in API 34. The app still targets API 35. Build tools stay outside the APK.
 
 The standalone script generates a development signing key in `.tools/pocket-dev.jks` and reuses it for updates. Keep that key if you want to install subsequent builds over this one. Use your own protected release key for a public release. `.tools`, build outputs, and keys are ignored by Git.
-
-## Verification
-
-`scripts/build.sh` compiles the app, creates DEX bytecode, packages it, verifies its APK signature and ZIP alignment, and runs Java tests for queue completion, manual skipping, repeat modes, shuffle, Previous history, the exact A → B → A → C example for manual and automatic Next, retention of visited songs, shuffle toggling, history reset/bounds, empty queues, metadata fallbacks, and restoring a saved queue selection.
-
-Device checks to perform: first-run permission grant/denial, selecting MP3s, restarting with saved imports/favorites, playing valid and corrupted MP3s, seeking, shuffled Previous/Next from the screen and notification, screen-off playback, headphone disconnect, incoming-call audio focus, embedded artwork and missing/corrupted pictures, recycled rows during scrolling, and quick skips while artwork loads. A successful build does not substitute for those device checks.
-
-For version 1.3, enable shuffle, choose each repeat mode, and select Favorites; force-stop and reopen to check that the choices remain. Repeat after rebooting. Check that declining the battery prompt leaves playback usable and that accepting it updates the battery icon on return. Play several short tracks with the screen off, dismiss the app from Recents, and verify continued playback and track transitions; pause/stop and check that playback wake locks are released. Test both the Android exemption and any manufacturer-specific battery settings on the target phone.
-
-For version 1.4, play and seek into a song, pause, force-stop, then reopen: the song and saved time should appear without audio starting. Press Play to continue from that point and confirm Next/shuffle use the previous queue. Repeat after rebooting and after stopping from the media notification. Test rapid seeks, pausing or disconnecting headphones while the saved position is loading, a removed file, and revoked audio access. Force-stopping during playback should restore within about five seconds of the last position.
