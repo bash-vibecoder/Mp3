@@ -2,11 +2,13 @@
 
 A small native Android player for local `.mp3` files. Android 8.0 or newer. No streaming, internet permission, accounts, ads, third-party libraries, bundled music, or downloaded codecs. Playback uses Android's built-in `MediaPlayer`.
 
-**Current version:** 1.5 · **Minimum Android:** 8.0 (API 26) · **Target Android:** 15 (API 35)
+**Current version:** 1.6 · **Minimum Android:** 8.0 (API 26) · **Target Android:** 15 (API 35)
 
-[Download APocketMp3-v1.5.apk](https://github.com/bash-vibecoder/Mp3/releases/download/v1.5/APocketMp3-v1.5.apk) · [Latest release](https://github.com/bash-vibecoder/Mp3/releases/latest)
+[Download APocketMp3-v1.6.apk](https://github.com/bash-vibecoder/Mp3/releases/download/v1.6/APocketMp3-v1.6.apk) · [Latest release](https://github.com/bash-vibecoder/Mp3/releases/latest)
 
-**Android package ID:** `com.apocketmp3.player`. Version 1.5 uses this new identity and displays **APocketMp3** on the launcher and in Android settings. Android installs it as a separate app from version 1.4 and earlier. Imported-file access, favorites, saved settings, and playback bookmarks from the old package do not transfer automatically; scan or pick your MP3s and grant permissions again in the new app.
+**Android package ID:** `com.apocketmp3.player`. Version 1.5 introduced this identity and displayed **APocketMp3** on the launcher and in Android settings. Android installs it as a separate app from version 1.4 and earlier. Imported-file access, favorites, saved settings, and playback bookmarks from the old package do not transfer automatically; scan or pick your MP3s and grant permissions again in the new app.
+
+On the first launch, APocketMp3 explains music-library access and battery optimization, requests music permission through Android, and then offers the battery optimization exemption. You can choose **Use file picker** instead of granting whole-library access. The setup prompt appears once; the battery icon remains available for later changes.
 
 ## Features
 
@@ -31,6 +33,13 @@ Active playback uses a foreground media service and MediaPlayer's playback wake 
 Permissions are limited to reading the audio library when requested, running a foreground music service, keeping the CPU awake during playback/preparation, and requesting a battery optimization exemption. Picking MP3s through Android's file picker works without granting whole-library access. The app has no internet permission, and Android app backup is disabled.
 
 ## Changelog
+
+### 1.6
+
+- Add a one-time first-launch setup flow for music-library permission and battery optimization.
+- Allow users to continue with the file picker without granting whole-library access.
+- Replace the launcher artwork with a circular black icon and blue inverted audio mark.
+- Update the versioned APK link to `APocketMp3-v1.6.apk`.
 
 ### 1.5
 
@@ -97,6 +106,6 @@ bash scripts/build.sh
 
 The standalone build compiles against API 35 and packages resources using API 34 because the Ubuntu ARM resource tool predates API 35's compact resource format. All referenced resource IDs are present in API 34. The app still targets API 35. Build tools stay outside the APK.
 
-The signed output is `dist/APocketMp3-v1.5.apk`. The script reads the version from `AndroidManifest.xml` to name future builds automatically.
+The signed output is `dist/APocketMp3-v1.6.apk`. The script reads the version from `AndroidManifest.xml` to name future builds automatically.
 
 The standalone script generates a development signing key in `.tools/pocket-dev.jks` and reuses it for updates. Keep that key if you want to install subsequent builds over this one. Use your own protected release key for a public release. `.tools`, build outputs, and keys are ignored by Git.

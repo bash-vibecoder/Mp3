@@ -69,7 +69,8 @@ import java.util.concurrent.Executors;
 public final class MainActivity extends Activity {
     private static final int BG = 0xff000000, PANEL = 0xff0c1421, BLUE = 0xff55a7ff;
     private static final int WHITE = 0xfff3f7ff, MUTED = 0xff8c9db5;
-    private static final int PICK = 41, PERMISSION = 42;
+    private static final int PICK = 41, PERMISSION = 42, FIRST_SETUP_PERMISSION = 43;
+    private static final String SETUP_PROMPT_SHOWN = "setupPromptShown";
     private final ArrayList<Track> tracks = new ArrayList<>(), visible = new ArrayList<>();
     private final ExecutorService worker = Executors.newSingleThreadExecutor();
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -127,6 +128,7 @@ public final class MainActivity extends Activity {
         bound = bindService(new Intent(this, PlaybackService.class), connection, BIND_AUTO_CREATE);
         handler.post(tick);
         loadLibrary();
+        handler.post(this::maybeShowFirstLaunchSetup);
     }
 
     @Override protected void onResume() {
@@ -225,6 +227,27 @@ public final class MainActivity extends Activity {
                     && !openSettings(new Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))) openAppSettings();
         });
         dialog.show();
+    }
+
+    private void maybeShowFirstLaunchSetup() {
+        if (isFinishing() || prefs.getBoolean(SETUP_PROMPT_SHOWN, false)) return;
+        prefs.edit().putBoolean(SETUP_PROMPT_SHOWN, true).apply();
+        new AlertDialog.Builder(this)
+                .setTitle("Set up APocketMp3")
+                .setMessage("Give APocketMp3 access to your music files so it can scan your library. Android will then ask whether APocketMp3 may ignore battery optimization so music can continue with the screen off.")
+                .setPositiveButton("Continue", (dialog, which) -> beginFirstLaunchSetup())
+                .setNegativeButton("Use file picker", (dialog, which) -> finishFirstLaunchSetup())
+                .show();
+    }
+
+    private void beginFirstLaunchSetup() {
+        if (canScan()) finishFirstLaunchSetup();
+        else requestPermissions(new String[]{permission()}, FIRST_SETUP_PERMISSION);
+    }
+
+    private void finishFirstLaunchSetup() {
+        if (!batteryExempt()) showBatterySettings();
+        else toast("APocketMp3 is ready. Pick or scan your music to begin.");
     }
 
     private boolean openSettings(Intent intent) {
@@ -410,7 +433,11 @@ public final class MainActivity extends Activity {
 
     @Override public void onRequestPermissionsResult(int code, String[] permissions, int[] results) {
         super.onRequestPermissionsResult(code, permissions, results);
-        if (code == PERMISSION) {
+        if (code == FIRST_SETUP_PERMISSION) {
+            if (results.length > 0 && results[0] == PackageManager.PERMISSION_GRANTED) loadLibrary();
+            else toast("Music access was declined. You can still use Pick MP3s.");
+            finishFirstLaunchSetup();
+        } else if (code == PERMISSION) {
             if (results.length > 0 && results[0] == PackageManager.PERMISSION_GRANTED) loadLibrary();
             else { toast("You can still use Pick MP3s without library access."); filter(); }
         }
